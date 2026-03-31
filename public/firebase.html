@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJ4W-i5SNKnj5XqkKi91c32m3Tv5fQhuY",
+            authDomain: "onpe-rodrigo.firebaseapp.com",
+            projectId: "onpe-rodrigo",
+            storageBucket: "onpe-rodrigo.firebasestorage.app",
+            messagingSenderId: "603629458203",
+            appId: "1:603629458203:web:b0f7686e50f169f78779be"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const setNacional = async () => {
+            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Nacional')
+            const participaciones = await dataN.json()
+            participaciones.data.forEach(async participacion => {
+                addDoc(collection(db, 'Nacional' ), participacion)
+            } )
+        }
+
+        const setExtranjero = async () => {
+            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Extranjero')
+            const participaciones = await dataN.json()
+            participaciones.data.forEach(async participacion => {
+                addDoc(collection(db, 'Extranjero' ), participacion)
+            } )
+        }
+
+        const setNacionales = async () => {
+            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Nacional')
+            const participaciones = await dataN.json()
+            participaciones.data.forEach(async dataP =>{
+                const departamento = await fetch(`http://localhost/onpe_sweb_php/participacion/Nacional/${dataP.DPD}`)
+                dataP.departamento = (await departamento.json()).data
+                addDoc(collection(db, 'Nacionales' ), dataP)
+            })
+        }
+
+        const setParticipacion = async (id) => {
+            const data_departamentos = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}`)
+            const departamentos = await data_departamentos.json()
+            departamentos.data.forEach(async departamento =>{
+                departamento.ID = id
+                addDoc(collection(db, 'participacion_departamento'), departamento)
+
+                const data_provincia = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}/${departamento.DPD}`)
+                const provincias = await data_provincia.json()
+                provincias.data.forEach(async provincia => {
+                    provincia.Departamento = departamento.DPD
+                    addDoc(collection(db, "participacion_provincia"), provincia)
+
+                    const data_distrito = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}/${departamento.DPD}/${provincia.DPD}`)
+                    const distritos = await data_distrito.json()
+                    distritos.data.forEach(distrito =>{
+                        distrito.Departamento = departamento.DPD
+                        distrito.Provincia = provincia.DPD
+                        addDoc(collection(db, "participacion_distrito"), distrito)
+                    })
+                })
+            })
+        }
+
+        //setNacional()
+        //setExtranjero()
+        //setNacionales()
+        setParticipacion("Nacional")
+        setParticipacion("Extranjero")
+    </script>
+</body>
+</html>
+
