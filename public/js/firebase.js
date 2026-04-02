@@ -25,9 +25,17 @@ const p_distrito = async (id) => getDocs(query(collection(db, 'participacion_dis
 
 
 export const OnpeController = async (metodo, id) => {
+    let accion = "";
+    let data = null;
+
     switch(metodo) {
-        case "participacion": return await p_departamento(id); 
-        case "provincia": return await p_provincia(id);
-        case "distrito": return await p_distrito(id);
+        case "participacion": data = await p_departamento(id); accion = "departamento"; break;
+        case "provincia": data = await p_provincia(id); accion = "provincia"; break;
+        case "distrito": data = await p_distrito(id); accion = "distrito"; break;
     }
+
+    const array = [];
+    array.push(accion, data);
+    return array;
+
 }
