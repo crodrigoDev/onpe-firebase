@@ -17,5 +17,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const participacion = async (ambito) => getDocs(query(collection(db, `${ambito}`),orderBy('DPD')))
-export const dpdparticipacion = async (ambito, dpd) => getDocs(query(collection(db, `${ambito}`), where('DPD', '==', `${dpd}`),orderBy('DPD')))
+// export const participacion = async (ambito) => getDocs(query(collection(db, `${ambito}`),orderBy('DPD')))
+//export const dpdparticipacion = async (ambito, dpd) => getDocs(query(collection(db, `${ambito}`), where('DPD', '==', `${dpd}`),orderBy('DPD')))
+const p_departamento = async (id) => getDocs(query(collection(db, 'participacion_departamento'),where("ID", "==", `${id}`), orderBy('DPD')))
+const p_provincia = async (id) => getDocs(query(collection(db, 'participacion_provincia'),where("Departamento", "==", `${id}`), orderBy('DPD')))
+const p_distrito = async (id) => getDocs(query(collection(db, 'participacion_distrito'),where("Provincia", "==", `${id}`), orderBy('DPD')))
+
+
+export const OnpeController = async (metodo, id) => {
+    switch(metodo) {
+        case "participacion": return await p_departamento(id); 
+        case "provincia": return await p_provincia(id);
+        case "distrito": return await p_distrito(id);
+    }
+}

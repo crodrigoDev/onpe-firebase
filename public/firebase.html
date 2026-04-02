@@ -27,32 +27,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const setNacional = async () => {
-            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Nacional')
-            const participaciones = await dataN.json()
-            participaciones.data.forEach(async participacion => {
-                addDoc(collection(db, 'Nacional' ), participacion)
-            } )
-        }
-
-        const setExtranjero = async () => {
-            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Extranjero')
-            const participaciones = await dataN.json()
-            participaciones.data.forEach(async participacion => {
-                addDoc(collection(db, 'Extranjero' ), participacion)
-            } )
-        }
-
-        const setNacionales = async () => {
-            const dataN = await fetch('http://localhost/onpe_sweb_php/participacion/Nacional')
-            const participaciones = await dataN.json()
-            participaciones.data.forEach(async dataP =>{
-                const departamento = await fetch(`http://localhost/onpe_sweb_php/participacion/Nacional/${dataP.DPD}`)
-                dataP.departamento = (await departamento.json()).data
-                addDoc(collection(db, 'Nacionales' ), dataP)
-            })
-        }
-
         const setParticipacion = async (id) => {
             const data_departamentos = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}`)
             const departamentos = await data_departamentos.json()
@@ -77,11 +51,24 @@
             })
         }
 
+        const setUbigeos = async (id) => {
+            const data_ubigeos = await fetch(`http://localhost/onpe_sweb_php/${id}`)
+            const ubigeos = await data_ubigeos.json()
+            ubigeos.data.forEach(ubigeo => {
+                addDoc(collection(db, `${id}`), ubigeo)
+            })
+        }
+
+
         //setNacional()
         //setExtranjero()
         //setNacionales()
-        setParticipacion("Nacional")
-        setParticipacion("Extranjero")
+        //setParticipacion("Nacional")
+        //setParticipacion("Extranjero")
+        //setUbigeos("departamento")
+        //setUbigeos("provincia")
+        //setUbigeos("distrito")
+        //setUbigeos("localvotacion")
     </script>
 </body>
 </html>

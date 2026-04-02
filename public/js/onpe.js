@@ -1,48 +1,28 @@
-import {participacion, dpdparticipacion} from "./firebase.js"
+import { OnpeController} from "./firebase.js"
 
-export const verParticipacion = async (id, idant) => {
+export const verParticipacion = async (id) => {
     //const id = new URLSearchParams(window.location.search).get('id')
+    let querySnap = null
+    if(id == "Nacional" || id == "Extranjero"){
+        querySnap = await OnpeController("participacion", id)
+    }
     
     let html = ''
     let datahtml = ''
-    console.log(idant)
     let contenidoInterno = document.getElementById('page-wrap2')
-    const ambitos = id
-    if(id == "Nacionales" || id == "Extranjero")
-    {
-        let querySnap = await participacion(id)
-        querySnap.forEach(doc =>{
-            let ambito = doc.data()
-            datahtml += `
-                <tr onclick="location.href='./participacion_total.html?id=${ambito.DPD}'" onmouseover="this.style.cursor = &quot;pointer&quot;; this.style.color = &quot;grey&quot;" onmouseout="this.style.color = &quot;black&quot;" style="cursor: pointer; color: black;">
-                    <td>${ambito.DPD}</td>
-                    <td>${ambito.TV}</td>
-                    <td>${ambito.PTV}</td>
-                    <td>${ambito.TA}</td>
-                    <td>${ambito.PTA}</td>
-                    <td>${ambito.EH}</td>
-                </tr>
-            `
-        })
-    }
-    else
-    {
-        let querySnap = await dpdparticipacion(idant, id)
-        
-        const datosAmbito = querySnap.docs[0].data();
-        datosAmbito.departamento.forEach((doc, i) =>{
-            datahtml += `
-                <tr onclick="location.href='./participacion_total.html?id=${doc.DPD}'" onmouseover="this.style.cursor = &quot;pointer&quot;; this.style.color = &quot;grey&quot;" onmouseout="this.style.color = &quot;black&quot;" style="cursor: pointer; color: black;">
-                    <td>${doc.DPD}</td>
-                    <td>${doc.TV}</td>
-                    <td>${doc.PTV}</td>
-                    <td>${doc.TA}</td>
-                    <td>${doc.PTA}</td>
-                    <td>${doc.EH}</td>
-                </tr>
-            `
-        })
-    }
+    querySnap.forEach(doc =>{
+        let ambito = doc.data()
+        datahtml += `
+            <tr onclick="location.href='./participacion_total.html?id=${ambito.DPD}'" onmouseover="this.style.cursor = &quot;pointer&quot;; this.style.color = &quot;grey&quot;" onmouseout="this.style.color = &quot;black&quot;" style="cursor: pointer; color: black;">
+                <td>${ambito.DPD}</td>
+                <td>${ambito.TV}</td>
+                <td>${ambito.PTV}</td>
+                <td>${ambito.TA}</td>
+                <td>${ambito.PTA}</td>
+                <td>${ambito.EH}</td>
+            </tr>
+        `
+    })
     
     
 
