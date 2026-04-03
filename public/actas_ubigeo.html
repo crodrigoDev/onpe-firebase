@@ -102,9 +102,9 @@
                     <div class="col-md-3">
                       <label class="control-label">Ámbito:</label>
                       <div id="ambito" class="form-group">
-                        <select name="cdgoAmbito" id="cdgoAmbito" class="form-control" onchange="buscarAmbito('', 'acta', '', this.value, ''); $('#aComentarioProvincia').html('');">
-                          <option value="P">PERÚ</option>
-                          <option value="E">EXTRANJERO</option>
+                        <select name="cdgoAmbito" id="cdgoAmbito" class="form-control">
+                          <option value="1">PERÚ</option>
+                          <option value="2">EXTRANJERO</option>
                         </select>
                       </div>
                     </div>
@@ -113,33 +113,9 @@
                       <div class="form-group">
                         <label id="lblDepartamento" class="control-label">Departamento:</label>
                         <div id="departamentos">
-                          <select name="cdgoDep" id="cdgoDep" class="form-control" onchange="getProvinciasDepa_acta('', '', this.value);">
+                          <select name="cdgoDep" id="cdgoDep" class="form-control">
                             <option selected="selected" value="">--SELECCIONE--</option>
                             <option value="010000">AMAZONAS</option>
-                            <option value="020000">ANCASH</option>
-                            <option value="030000">APURIMAC</option>
-                            <option value="040000">AREQUIPA</option>
-                            <option value="050000">AYACUCHO</option>
-                            <option value="060000">CAJAMARCA</option>
-                            <option value="240000">CALLAO</option>
-                            <option value="070000">CUSCO</option>
-                            <option value="080000">HUANCAVELICA</option>
-                            <option value="090000">HUANUCO</option>
-                            <option value="100000">ICA</option>
-                            <option value="110000">JUNIN</option>
-                            <option value="120000">LA LIBERTAD</option>
-                            <option value="130000">LAMBAYEQUE</option>
-                            <option value="140000">LIMA</option>
-                            <option value="150000">LORETO</option>
-                            <option value="160000">MADRE DE DIOS</option>
-                            <option value="170000">MOQUEGUA</option>
-                            <option value="180000">PASCO</option>
-                            <option value="190000">PIURA</option>
-                            <option value="200000">PUNO</option>
-                            <option value="210000">SAN MARTIN</option>
-                            <option value="220000">TACNA</option>
-                            <option value="230000">TUMBES</option>
-                            <option value="250000">UCAYALI</option>
                           </select>
                         </div>
                       </div>
@@ -149,20 +125,9 @@
                       <div class="form-group">
                         <label id="lblProvincia" class="control-label">Provincia:</label>
                         <div id="provincias">
-                          <select name="cdgoProv" id="cdgoProv" class="form-control" onchange="buscarProvincia_actas(this.value, '', 'PR');
-                            if (this.value.substring(0,4) == '9430')
-                              $('#aComentarioProvincia').html('&nbsp;&nbsp;&nbsp;ACTUALMENTE SERBIA');
-                            else
-                              $('#aComentarioProvincia').html('');
-                            ">
+                          <select name="cdgoProv" id="cdgoProv" class="form-control">
                             <option selected="selected" value="">--SELECCIONE--</option>
                             <option value="010200">BAGUA</option>
-                            <option value="010300">BONGARA</option>
-                            <option value="010100">CHACHAPOYAS</option>
-                            <option value="010600">CONDORCANQUI</option>
-                            <option value="010400">LUYA</option>
-                            <option value="010500">RODRIGUEZ DE MENDOZA</option>
-                            <option value="010700">UTCUBAMBA</option>
                           </select>
                           <span id="aComentarioProvincia"></span>
                         </div>
@@ -176,16 +141,9 @@
                     <div class="col-md-4">
                       <label id="lblDistrito" class="control-label">Distrito:</label>
                       <div id="distritos" class="form-group">
-                        <select name="cdgoDist" id="cdgoDist" class="form-control" onchange="
-                          getPageWeb('', 'actas', 'getLocalesVotacion', 'divLocal', '&amp;tipoElec=&amp;ubigeo=' + this.value);
-                          getPageWeb('', 'actas', 'limpiarDiv', 'divDetalle', '');">
+                        <select name="cdgoDist" id="cdgoDist" class="form-control">
                           <option selected="selected" value="">--SELECCIONE--</option>
                           <option value="010202">ARAMANGO</option>
-                          <option value="010205">BAGUA</option>
-                          <option value="010203">COPALLIN</option>
-                          <option value="010204">EL PARCO</option>
-                          <option value="010206">IMAZA</option>
-                          <option value="010201">LA PECA</option>
                         </select>
                       </div>
                     </div>
@@ -194,10 +152,7 @@
                       <div class="form-group">
                         <label class="control-label">Locales:</label>
                         <div id="divLocal">    
-                          <select name="actas_ubigeo" id="actas_ubigeo" class="form-control" onchange="actas_porUbigeo_verActsPr(this.value, '10', '')">
-                            <option value="-1?-1" selected="selected">--SELECCIONE--</option>
-                            <option value="0033?010202">IE 16201</option>
-                            <option value="0032?010202">IE MIGUEL MONTEZA TAFUR</option>
+                          <select name="actas_ubigeo" id="actas_ubigeo" class="form-control">
                           </select>
                         </div>
                       </div>
@@ -275,7 +230,7 @@
 
                     <div id="divDetalle" class="ptop20">
                       <div class="contenido-resultados">
-                        <button class="btn btn-primary pull-right" onclick="actas_porUbigeo_verActsPr('', '10', '', '1')" type="button">
+                        <button class="btn btn-primary pull-right" type="button">
                           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                           REGRESAR
                         </button>
@@ -458,6 +413,6 @@
         </div>
       </div>
     </footer>
-      
+      <script type="module" src="./js/router.js"></script>
   </body>
 </html>

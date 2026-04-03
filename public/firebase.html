@@ -57,6 +57,8 @@
             const data_ubigeos = await fetch(`http://localhost/onpe_sweb_php/${id}`)
             const ubigeos = await data_ubigeos.json()
             ubigeos.data.forEach(ubigeo => {
+                if(id == "departamento" && ubigeo.idDepartamento < 26) ubigeo.idAmbito = "1"
+                if(id == "departamento" && ubigeo.idDepartamento > 25) ubigeo.idAmbito = "2"
                 addDoc(collection(db, `${id}`), ubigeo)
             })
         }
