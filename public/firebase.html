@@ -37,12 +37,14 @@
                 const data_provincia = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}/${departamento.DPD}`)
                 const provincias = await data_provincia.json()
                 provincias.data.forEach(async provincia => {
+                    provincia.ID = id
                     provincia.Departamento = departamento.DPD
                     addDoc(collection(db, "participacion_provincia"), provincia)
 
                     const data_distrito = await fetch(`http://localhost/onpe_sweb_php/participacion/${id}/${departamento.DPD}/${provincia.DPD}`)
                     const distritos = await data_distrito.json()
                     distritos.data.forEach(distrito =>{
+                        distrito.ID = id
                         distrito.Departamento = departamento.DPD
                         distrito.Provincia = provincia.DPD
                         addDoc(collection(db, "participacion_distrito"), distrito)
@@ -59,10 +61,6 @@
             })
         }
 
-
-        //setNacional()
-        //setExtranjero()
-        //setNacionales()
         //setParticipacion("Nacional")
         //setParticipacion("Extranjero")
         //setUbigeos("departamento")

@@ -17,24 +17,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// export const participacion = async (ambito) => getDocs(query(collection(db, `${ambito}`),orderBy('DPD')))
-//export const dpdparticipacion = async (ambito, dpd) => getDocs(query(collection(db, `${ambito}`), where('DPD', '==', `${dpd}`),orderBy('DPD')))
+// Funciones para obtener los datos del Firestore
 const p_departamento = async (id) => getDocs(query(collection(db, 'participacion_departamento'),where("ID", "==", `${id}`), orderBy('DPD')))
 const p_provincia = async (id) => getDocs(query(collection(db, 'participacion_provincia'),where("Departamento", "==", `${id}`), orderBy('DPD')))
 const p_distrito = async (id) => getDocs(query(collection(db, 'participacion_distrito'),where("Provincia", "==", `${id}`), orderBy('DPD')))
+const post_distrito = async (id) => getDocs(query(collection(db, 'participacion_distrito'),where("DPD", "==", `${id}`), orderBy('DPD')))
 
-
+// Controlador para ejecutar una funcion dependiendo del metodo que se solicite
 export const OnpeController = async (metodo, id) => {
-    let accion = "";
+    let accion = ""; // Siguiente accion -> para saber que metodo mandar al controller
     let data = null;
 
     switch(metodo) {
         case "participacion": data = await p_departamento(id); accion = "departamento"; break;
         case "provincia": data = await p_provincia(id); accion = "provincia"; break;
         case "distrito": data = await p_distrito(id); accion = "distrito"; break;
+        case "post-distrito": data = await post_distrito(id); accion = ""; break;
     }
 
-    const array = [];
+    const array = []; // Arreglo que contendra la siguiente accion y la data 
     array.push(accion, data);
     return array;
 
