@@ -8,7 +8,10 @@ const inicializar = async () => {
         await verParticipacion(id, accion)
     }
     if(path.startsWith("/public/actas_ubigeo.html")){
-        await verActas()
+        await verActas('ubigeo')
+    }
+    if(path.startsWith("/public/actas_numero.html")){
+        await verActas('numero')
     }
 }
 

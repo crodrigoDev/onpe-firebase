@@ -27,7 +27,8 @@ const departamentos = async (id) => getDocs(query(collection(db, 'departamento')
 const provincias = async (id) => getDocs(query(collection(db, 'provincia'), where("idDepartamento", "==", `${id}`), orderBy("idProvincia")))
 const distritos = async (id) => getDocs(query(collection(db, 'distrito'), where("idProvincia", "==", `${id}`), orderBy("idDistrito")))
 const locales = async (id) => getDocs(query(collection(db, 'localvotacion'), where("idDistrito", "==", `${id}`), orderBy("idLocalVotacion")))
-
+const grupos = async (id) => getDocs(query(collection(db, 'grupovotacion'), where("idLocalVotacion", "==", `${id}`), orderBy("idGrupoVotacion")))
+const acta = async (id) => getDocs(query(collection(db, 'actas'), where("idGrupoVotacion", "==", `${id}`)))
 // Controlador para ejecutar una funcion dependiendo del metodo que se solicite
 export const OnpeController = async (metodo, id) => {
     let accion = ""; // Siguiente accion -> para saber que metodo mandar al controller<<<<<<<
@@ -42,6 +43,8 @@ export const OnpeController = async (metodo, id) => {
         case "prov" : data = await provincias(id); accion = ""; break;
         case "dist" : data = await distritos(id); accion = ""; break;
         case "localvotacion" : data = await locales(id); accion = ""; break;
+        case "grupovotacion" : data = await grupos(id); accion = ""; break;
+        case "actas" : data = await acta(id); accion = ""; break;
     }
 
     const array = []; // Arreglo que contendra la siguiente accion y la data 

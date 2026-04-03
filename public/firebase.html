@@ -63,12 +63,22 @@
             })
         }
 
+        const setActas = async(id) => {
+            const data_actas = await fetch(`http://localhost/onpe_sweb_php/${id}`)
+            const actas = await data_actas.json()
+            actas.data.forEach(acta => {
+                addDoc(collection(db, "actas"), acta)
+            })
+        }
+
         //setParticipacion("Nacional")
         //setParticipacion("Extranjero")
         //setUbigeos("departamento")
         //setUbigeos("provincia")
         //setUbigeos("distrito")
         //setUbigeos("localvotacion")
+        //setUbigeos("grupovotacion")
+        //setActas("grupovotacion")
     </script>
 </body>
 </html>
