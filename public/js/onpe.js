@@ -124,7 +124,7 @@ export const verActas = async (q) => {
             const comboData = await OnpeController(metodo, cbo.value)
             comboData[1].forEach(doc => {
                 let combo = doc.data()
-                if(metodo == "dpd" || metodo == "prov") option = metodo == "dpd" ? `<option value="${combo.idDepartamento}">${combo.Detalle}</option>` : `<option value="${combo.idDepartamento}">${combo.Detalle}</option>`
+                if(metodo == "dpd" || metodo == "prov") option = metodo == "dpd" ? `<option value="${combo.idDepartamento}">${combo.Detalle}</option>` : `<option value="${combo.idProvincia}">${combo.Detalle}</option>`
                 if(metodo == "dist" || metodo == "localvotacion") option = metodo == "dist" ? `<option value="${combo.idDistrito}">${combo.Detalle}</option>` : `<option value="${combo.idLocalVotacion}">${combo.RazonSocial}</option>`
                 cboLlenar.innerHTML += `${option}`
             })
@@ -252,7 +252,7 @@ export const verActas = async (q) => {
                 return
             }
             const detalle = actas[1].docs[0].data();
-            const estado = detalle.idEstadoActa == "1" ? "Acta Electoral Normal" : "Acta Electoral Resuelta"
+            const estado = detalle.idEstadoActa == "1" ? "ACTA ELECTORAL NORMAL" : "ACTA ELECTORAL RESUELTA"
             actadetalle += `
                 <div class="contenido-resultados">
                     <button class="btn btn-primary pull-right" id="btn-regresar" type="button">
@@ -301,9 +301,9 @@ export const verActas = async (q) => {
                                                                     <table class="table14" cellspacing="0">
                                                                         <tbody>
                                                                             <tr class="titulo_tabla">
-                                                                                <td>Departamento</td>
-                                                                                <td>Provincia</td>
-                                                                                <td>Distrito</td>
+                                                                                <td id="lblDepartamento">Departamento</td>
+                                                                                <td id="lblProvincia">Provincia</td>
+                                                                                <td id="lblDistrito">Distrito</td>
                                                                                 <td>Local de votación</td>
                                                                                 <td>Dirección</td>
                                                                             </tr>

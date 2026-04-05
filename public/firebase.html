@@ -63,22 +63,61 @@
             })
         }
 
-        const setActas = async(id) => {
-            const data_actas = await fetch(`http://localhost/onpe_sweb_php/${id}`)
-            const actas = await data_actas.json()
-            actas.data.forEach(acta => {
-                addDoc(collection(db, "actas"), acta)
+        // Sirve para setear datos tanto para grupos de votacion como actas
+        const setGruposVotacion = async (isAmbito, isDetalle, id, idAmbito) => {
+            // isAmbito significa si va a ser ambito o departamento la llamada a la api
+            // isDetalle es para saber si es actas(todo los campos) o solos los grupos(idLocalVotacion e idGrupoVotacion)
+            let api_url = ""
+            if(isAmbito == 1){
+                if(isDetalle == 1) api_url = `http://localhost/onpe_sweb_php/grupovotacion/detalle/26/30` // Por el momento solo sube Extranjero, sino se satura
+                if(isDetalle == 0) api_url = `http://localhost/onpe_sweb_php/grupovotacion/26/30`
+            }
+            else{
+                if(isDetalle == 1) api_url = `http://localhost/onpe_sweb_php/grupovotacion/detalle/${id}` // api_url por departamento, preferible AMAZONAS
+                if(isDetalle == 0) api_url = `http://localhost/onpe_sweb_php/grupovotacion/${id}`
+            }
+            const data_grupos = await fetch(api_url)
+            const grupos = await data_grupos.json()
+            grupos.data.forEach(grupo => {
+                if(isDetalle == 0) {
+                    grupo.idAmbito = idAmbito
+                    addDoc(collection(db, `grupovotacion`), grupo)
+                }
+                if(isDetalle == 1){
+                    grupo.idAmbito = idAmbito
+                    addDoc(collection(db, "actas"), grupo)
+                }
             })
         }
 
+        // Seteo para las participaciones
         //setParticipacion("Nacional")
         //setParticipacion("Extranjero")
+
+        // Seteo para los CBO
         //setUbigeos("departamento")
         //setUbigeos("provincia")
         //setUbigeos("distrito")
         //setUbigeos("localvotacion")
-        //setUbigeos("grupovotacion")
-        //setActas("grupovotacion")
+
+        // Seteo sin detalle (grupos de votacion) 
+        //setGruposVotacion(0, 0, "AMAZONAS", "1") // por departamento -> ambito 1 (Nacional)
+        //setGruposVotacion(1, 0, "", "2") // por ambito (Solo Extranjero) -> ambito 2 (Extranjero)
+
+        // Seteo para detalle (Actas)
+        //setGruposVotacion(1, 1, "", "2") // por ambito (Solo Extranjero) -> ambito 2 (Extranjero)
+        //setGruposVotacion(0, 1, "AMAZONAS", "1") // por departamento -> ambito 1 (Nacional)
+        
+        /*
+            En el Seteo de Grupos de votacion o Actas
+            Cambiar el ultimo parametro dependiendo de lo que vayas a setear,
+            Ejemplos, si tu tercer parametro es AMERICA o algun continente por obvias razones su idAmbito = 4 parametro, sera "2" -> es String
+            Ejemplos, si tu tercer parametro es AMAZONAS o algun departamento por obvias razones su idAmbito = 4 parametro, sera "1" -> es String
+
+            Ejemplo para Grupos o Actas por Ambito
+            Si tu rango dentro de la funcion setGruposVotacion es 26 a 30, por obvias razones sera "2"
+            Si tu rango dentro de la funcion setGruposVotacion es 1 a 25, por obvias razones sera "1"
+        */
     </script>
 </body>
 </html>
